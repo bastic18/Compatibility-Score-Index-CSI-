@@ -1,0 +1,59 @@
+{% extends "sidebar.html" %} {% block div %}
+<div class="register-form center-block less ml-5">
+  {% if 'username' in session %}
+  <div class="page_header">
+    <h2 class="dash_header darken">Test Your Compatibility</h2>
+  </div>
+</div>
+{% include 'flash_messages.html' %}
+  <form
+    class="compare-card"
+    action="{{ url_for('aboutFriend', username=username) }}"
+    method="POST"
+  >
+    {{ form.csrf_token }}
+    <div class = "text-center pt-4">
+            
+            <div>
+              {{ form.username.label(class='control-label mr-2') }}
+            </div>
+           <br>
+            <div>
+             <input type="text" id="livebox"  {{ form.username(class='mydropdown') }}
+  
+            </div>
+
+            <div>
+              <input type="submit" value="Go" class="btn ok-sml mt-3 mb-4" />
+            </div>
+             <div class = "livesearch text-left pt-4"> <p id = "datalist"></p> </div>
+          </div>
+
+        </form>
+        
+<script>
+    $(document).ready(function(){
+        $("#livebox").on("input",function(e){
+          console.log($("#livebox").val());
+            $("#datalist").empty();
+            $.ajax({
+                method:"post",
+                url:"/livesearch/",
+                data:{text:$("#livebox").val()},
+
+                success:function(res){
+                    var data = "<ul>";
+                    $.each(res,function(index,value){
+                      console.log(value);
+                        data += "<li>"+value["userB username"]+"</li>";
+                    });
+                    data += "</ul>";
+                    $("#datalist").html(data);
+                }
+            });
+        });
+    });
+</script>
+    </div>
+{% endif %} {% endblock %}
+

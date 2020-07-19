@@ -1,0 +1,91 @@
+
+
+
+{% extends "sidebar.html" %} {% block div %}
+<div>
+  <div class="page_header">
+    <h2 class="dash_header darken">Recommended Matches</h2>
+    <h3 class="dash_header2">Top 9 Matches</h3>
+    {% include 'flash_messages.html' %}
+
+    <span>
+      <a href="{{ url_for('run') }}">
+        <img
+          src="/static/images/multimedia.png"
+          class="reload grow"
+          data-toggle="tooltip"
+          data-placement="right"
+          title="Click to Run"
+        />
+      </a>
+    </span>
+  </div>
+
+  <div class="dropdown">
+    <form method="post" action="/recommend/{{session.get('username')}}">
+      <div class="row postn">
+        <div class="col-6">
+          {{ form.crit(class='btn mydropdown mb-1') }}
+        </div>
+
+        <div class="col-6 pl-0 pr-0">
+          <input type="submit" value="Go" class="btn ok-sml" />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  {% if not matches %}
+  <div class="alert alert-primary mt-5">
+    Currently No Matches, possible reasons:
+    <ul class="mt-2">
+      <li class="bullets">
+        You have not clicked the Run button
+        <img
+          src="/static/images/multimedia.png"
+          class="ml-1 grow"
+          width="20"
+          height="20"
+        />
+      </li>
+      <li class="bullets">
+        We don't have any information on you, go to Dashboard and click the
+        <img
+          src="/static/images/edit (2).png"
+          class="ml-1 grow"
+          width="20"
+          height="20"
+        />
+      </li>
+      <li class="bullets">There are currently no users in the system</li>
+    </ul>
+  </div>
+  {% else %}
+  <!-- RECOMMEND TILE LAYOUT -->
+  
+  <!-- CHANGED TO ALLOW FOR 'EX OFF' TO WORK, INSTEAD OF WHOLE TILE, THE NAME AREA REDIRECTS USER TO GRAPH PAGE -->
+  <div class="row pl-5 pr-4">
+    {% for match in matches%}
+    <div class="col-4">
+      <button
+        class="rmndTile"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="{{match['email']}}"
+      >
+        <a href="{{ url_for('block', userB = match['userB username']) }}">
+          <span class="delete_" aria-hidden="true">&times;</span>
+        </a>
+        <span class="percentage">{{(match['percentage'])|round|int}} %</span>
+        <a href="{{ url_for('recommended', match = match['userB username']) }}">
+          <div class="grp_title py-3">
+            {{match['first_name']}} {{match['last_name']}}
+          </div>
+        </a>
+      </button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %} {% endblock %}
+</div>
+

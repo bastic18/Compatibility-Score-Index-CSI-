@@ -1,0 +1,183 @@
+{% extends "sidebar.html" %} {% block div %}
+
+{% if session.get('TYPE') == "Organizer" %}
+
+  <div>
+    <div class="page_header">
+      <h2 class="dash_header mb-5">{{ fullSet[0]['set_name'] }}</h2>
+      {% include 'flash_messages.html' %}
+    </div>
+  </div>
+      {% if not getMembers %}
+      <div class = "alert alert-primary mt-5">
+              No one has joined the Set.
+          </div>
+      {% endif %}
+
+    {% if session.get('TYPE') == "Organizer" and getMembers %}
+    <div class="row mb-3">
+            
+      <div class="col">
+        <h4 class="grp_header">Members: </h4>
+      </div>
+        
+      <div class="col btn-align">
+        <!-- Button trigger modal -->
+        <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="modal" data-target="#formgroupmodal">
+          Form Groups
+        </button>
+      </div>
+    </div>
+    
+      <span class="btn-right">
+        </span>
+
+    {% endif %}
+
+    <div class="row">
+      {% if session.get('TYPE') == "Organizer" and getMembers %} {% for item in
+      getMembers %}
+      <div class="col-4 mb-4">
+        <button class="member-tile">
+          <div class="py-3">
+            {{ item['first_name'] }} {{ item['last_name'] }}
+          </div>
+        </button>
+      </div>
+      {% endfor %} 
+      {% endif %} 
+    </div>
+  <div class="modal fade" id="formgroupmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="PopUpTitle">Form Groups</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <form
+          action="{{ url_for('members', sid = sid) }}"
+          method="post"
+          >
+
+          {{ form.csrf_token }}
+
+          <div class="dropdown">
+
+            <h5 class="modal-title mb-2" id="PopUpTitle">Group By:</h5> 
+            {{ form.grpBy(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+
+          </div>
+          
+          <div class="dropdown">
+
+            <h5 class="modal-title mb-2 mt-4" id="PopUpTitle">Number of Persons:</h5>  
+            {{ form.numPersons(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+
+          </div>
+          <hr>
+            <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Leadership Preference:</h8>  
+            {{ form.leadership(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Personality Preference:</h8>  
+            {{ form.personality(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Hobby Preference:</h8>  
+            {{ form.hobby(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Height Preference:</h8>  
+            {{ form.height(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Age Preference:</h8>  
+            {{ form.age(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+          
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Gender Preference:</h8>  
+            {{ form.gender(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Ethnicity Preference:</h8>  
+            {{ form.ethnicity(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Education Preference:</h8>  
+            {{ form.education(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+          <div class="dropdown mt-2">
+            <h8 class="modal-title mb-2 mt-4" id="PopUpTitle">Occupation Preference:</h8>  
+            {{ form.occupation(class='btn btn-outline-success my-2 my-sm-0 dropdown-toggle mb-3') }}
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          
+            {{ form.submit(class='btn btn-outline-success my-2 my-sm-0') }}
+        
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+{% if session.get('TYPE') == "Regular" %}
+  <div>
+    <div class="page_header">
+      <h2 class="dash_header mb-5">{{set_name['set_name']}}</h2>
+    </div>
+  </div>
+
+  
+
+  {% if grp_num %}
+    <h2 class="dash_header mb-5">Group {{grp_num}}</h2>
+<br>
+
+    <div class="row">
+    {% for member in getMembers %}
+    <div class="col-4 mb-4">
+      <button class="member-tile">
+      {%if member.leader%}
+        <div class="py-3">
+          Leader: {{ member['first_name'] }} {{ member['last_name'] }} 
+        </div>
+        {%else%}
+        <div class="py-3">
+          {{ member['first_name'] }} {{ member['last_name'] }} 
+        </div>
+        {%endif%}
+      </button>
+    </div>
+    {% endfor %} 
+    <canvas id="myChart" width="800" height="350" class="mb-4"></canvas>
+  </div>
+
+  {% else %}
+      <div class = "alert alert-primary mt-5">
+            No groups have been formed yet.
+      </div>
+  {% endif %}
+
+{% endif %}
+
+{% endblock %}

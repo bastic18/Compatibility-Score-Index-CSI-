@@ -1,0 +1,114 @@
+<nav class="navbar navbar-expand-lg navbar-light static-top container py-0">
+  <img
+    src="/static/images/Icon.png"
+    width="30"
+    height="30"
+    class="d-inline-block align-top mr-1"
+    alt=""
+  />
+  <a class="navbar-brand ml-1" href="#">Réseau</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item nav-link mr-4 active">
+        <a class="nav-link" href="{{ url_for('home') }}"
+          >Home<span class="sr-only">(current)</span></a
+        >
+      </li>
+      <li class="nav-item nav-link mr-4">
+        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+      </li>
+      <li class="nav-item nav-link mr-4">
+        <a class="nav-link" href="{{ url_for('testimonies') }}">Testimonies</a>
+      </li>
+    </ul>
+
+   
+
+    <ul class="navbar-nav">
+      {% if 'username' in session %}
+
+      <div class="dropdown nav-item">
+        <button
+          class="btn-username btn dropdown-toggle"
+          id="dropdownMenuButton"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+        {% if biography.pro_photo %}
+        <img src="{{ url_for('static', filename='uploads/' + biography.pro_photo) }}" class="mr-2 radius-3" width = "40" height = "40" />
+
+
+        {% else %}
+      
+          <img src="/static/images/User Header Icon.png" class="mr-2" />
+        {% endif %}
+          {{session['username']}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          {% if session['TYPE'] == "Administrator" %}
+              <a
+              class="nav-link username"
+              href="{{ url_for('admin') }}"
+            >
+              Dashboard</a>
+
+          {% else %}
+          <a
+            class="nav-link username"
+            href="{{ url_for('dashboard', username=session.get('username')) }}"
+          >
+            Your Profile</a
+          >
+          
+          {% endif %}
+
+          {% if session['TYPE'] == "Organizer" %}
+          <a
+            class="nav-link"
+            href="{{ url_for('createSet', username=session.get('username')) }}"
+            >New Set</a
+          >
+          {% endif %} {% if session['TYPE'] == "Regular" %}
+          <a
+            class="nav-link"
+            href="{{ url_for('joinASet', username=session.get('username')) }}"
+            >Join A Set</a
+          >
+          {% endif %}
+          <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+        </div>
+      </div>
+      {% else %}
+      
+      <li class="nav-item">
+        <a
+          class="btn btn-outline-success my-2 my-sm-0"
+          href="{{ url_for('login') }}"
+          >Log In</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="btn btn-outline-success my-2 my-sm-0"
+          href="{{ url_for('registerAs') }}"
+          >Register</a
+        >
+      </li>
+      {% endif %}
+      
+    </ul>
+  </div>
+</nav>

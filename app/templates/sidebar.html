@@ -1,0 +1,289 @@
+{% extends "base.html" %} {% block mains %}
+
+<!-- Sidebar for Friends Profile -->
+
+{% if friend %}
+<div class="row extra-marg">
+  <div class="col-4 sidebar-spacing">
+    <nav id="sidebar">
+      
+      <div class="sidebar-header">
+        <h4> {{user.first_name}} {{user.last_name}}  </h4>
+      </div>
+
+      {% if frnbiography.pro_photo %}
+      <div>
+        <img
+          src="{{ url_for('static', filename='uploads/' + frnbiography.pro_photo) }}"
+          width="220"
+          height="220"
+          class="img-thumbnail"
+          alt="profile picture"
+        />
+      </div>
+    {% else %}
+      <div>
+        <img
+          src="../static/images/no_profilepic.png"
+          width="220"
+          height="220"
+          class="img-thumbnail"
+          alt="profile picture"
+        />
+      </div>
+    {% endif %}
+    {% if frnbiography.about %}
+
+        <div class="abt px-5 text-left">
+          <p>
+            <b>About</b>
+          </p>
+
+          <p id="abtP">
+           {{frnbiography.about}}
+          </p>
+        </div>
+
+      {% else %}
+        <div class="abt px-5 text-left">
+          <p>
+            <b>About</b>
+          </p>
+
+          <p id="abtP">
+           {{ user.first_name }} has yet to add a biography.
+          </p>
+        </div>
+
+      {% endif %}
+
+    
+    </nav>
+  </div>
+
+
+
+{% else %}
+
+
+<!-- Sidebar for user -->
+<div class="row extra-marg">
+  <div class="col-4 sidebar-spacing">
+    <nav id="sidebar">
+      {% if 'username' in session %}
+      <div class="sidebar-header">
+        <h4>
+          {% if session['TYPE'] == "Administrator" %}
+            {{session['TYPE']}}
+          {% else %}
+
+          {{session['first_name']}} {{session['last_name']}} 
+          {% endif %}
+          {%if session['TYPE'] == "Regular"%}
+
+          <a href="{{ url_for('aboutUser', typeUser = session.get('TYPE')) }}"
+            ><img
+              src="/static/images/edit (2).png"
+              width="28"
+              height="28"
+              data-toggle="tooltip"
+              data-placement="right"
+              title="Tell Us About Yourself"
+              class="d-inline-block align-top ml-5 mb-1 grow"
+            />
+          </a>
+        </h4>
+      </div>
+      {% if biography.pro_photo %}
+        <div>
+          <img
+            src="{{ url_for('static', filename='uploads/' + biography.pro_photo) }}"
+            width="220"
+            height="220"
+            class="img-thumbnail"
+            alt="profile picture"
+          />
+        </div>
+      {% else %}
+        <div>
+          <img
+            src="../static/images/no_profilepic.png"
+            width="220"
+            height="220"
+            class="img-thumbnail"
+            alt="profile picture"
+          />
+        </div>
+      {% endif %}
+
+      {% if biography.about %}
+
+        <div class="abt px-5 text-left">
+          <p>
+            <b>About</b>
+            <a class="btn recom" href = "{{ url_for('edit_info', username=session.get('username')) }}" >Edit</a>
+          </p>
+
+          <p id="abtP">
+           {{biography.about}}
+          </p>
+        </div>
+
+      {% else %}
+        <div class="abt px-5 text-left">
+          <p>
+            <b>About</b>
+            <a class="btn recom" href = "{{ url_for('edit_info', username=session.get('username')) }}" >Edit</a>
+          </p>
+
+          <p id="abtP">
+            To edit your side-bar, click the 
+            <b>'Edit' </b> 
+            button above. 
+            <br />
+            Then click the pencil
+            <img
+              src="/static/images/edit (2).png"
+              width="18"
+              height="18"
+              class="d-inline-block align-top ml-1 mr-1 grow"
+            />
+            icon to tell us more about yourself so we can find your matches!
+          </p>
+        </div>
+      {% endif %}
+    {% endif %} 
+      
+      {% if session['TYPE'] == "Organizer" %}
+
+        </h4>
+      </div>
+      {% if biography.pro_photo %}
+      <div>
+        <img
+          src="{{ url_for('static', filename='uploads/' + biography.pro_photo) }}"
+          width="220"
+          height="220"
+          class="img-thumbnail"
+          alt="profile picture"
+        />
+      </div>
+    {% else %}
+      <div>
+        <img
+          src="../static/images/no_profilepic.png"
+          width="220"
+          height="220"
+          class="img-thumbnail"
+          alt="profile picture"
+        />
+      </div>
+
+    {% endif %}
+
+    {% if biography.about %}
+
+    <div class="abt px-5 text-left">
+      <p>
+        <b>About</b>
+        <a class="btn recom" href = "{{ url_for('edit_info', username=session.get('username')) }}" >Edit</a>
+      </p>
+
+      <p id="abtP">
+       {{biography.about}}
+      </p>
+    </div>
+
+  {% else %}
+      <div class="abt px-5 text-left">
+        <p>
+          <b>About</b>
+          <a class="btn recom" href = "{{ url_for('edit_info', username=session.get('username')) }}" >Edit</a>
+        </p>
+
+        <p id="abtP">
+          To edit your side-bar, click the
+          <b>'Edit' </b> 
+          button above! 
+          <br />
+         
+      </div>
+    {% endif %}
+
+    
+
+      {% endif %} 
+      {% endif %}
+     
+
+       {% if session['TYPE'] == "Administrator" %}
+       <ul class="list-unstyled components mt-5">
+         <li>
+           <a
+             href="{{ url_for('admin') }}"
+             class="btn rec-button ml-0"
+             >Settings</a
+           >
+         </li>
+ 
+         <li>
+           <a
+             href="{{ url_for('allUsers') }}"
+             class="btn rec-button ml-0"
+             >Users</a
+           >
+         </li>
+       </ul>
+       {% endif %}
+
+      {% if session['TYPE'] == "Organizer" %}
+
+      <ul class="list-unstyled components mt-4">
+        <li>
+          <a
+            href="{{ url_for('dashboard', username = session.get('username')) }}"
+            class="btn rec-button"
+            >Dashboard</a
+          >
+        </li>
+
+      </ul>
+      {% endif %} {% if session['TYPE'] == "Regular" %}
+      <ul class="list-unstyled components mt-4">
+        <li>
+          <a
+            href="{{ url_for('dashboard', username=session.get('username') )}}"
+            class="btn rec-button"
+            >Dashboard</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{ url_for('featureProfile', username=session.get('username') ) }}"
+            class="btn rec-button"
+            >Feature Profile</a
+          >
+        </li>
+        <li>
+          <a
+            href="{{ url_for('aboutFriend')}}"
+            class="btn rec-button"
+            >Compare Friend</a
+          >
+        </li>
+
+      </ul>
+      {% endif %}
+    </nav>
+  </div>
+
+{% endif %}
+
+  <div class="col-8">
+    <div class="content">
+      {% block div %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

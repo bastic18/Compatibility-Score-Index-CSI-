@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block main %}
+<div class="register-form center-block">
+  <img
+    src="../static/images/Footer Logo.png"
+    class="d-inline-block align-top mt-5"
+    alt=""
+  />
+  <h2 class="mb-5 mt-3">Registration</h2>
+  <form
+    action="{{ url_for('registerAs') }}"
+    method="post"
+    class="card-main mb-5"
+  >
+    <p>Registering as:</p>
+    <input
+      type="submit"
+      value="Regular"
+      name="Regular"
+      class="btn btn-outline-success my-2 my-sm-0"
+    />
+    <input
+      type="submit"
+      value="Organizer"
+      name="Organizer"
+      class="btn btn-outline-success my-2 my-sm-0"
+    />
+  </form>
+</div>
+{% endblock %}
